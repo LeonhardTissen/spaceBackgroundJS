@@ -32,12 +32,12 @@ function getRandomColor() {
 function drawSpaceDust() {
 	const x = Math.random() * cvs.width;
 	const y = Math.random() * cvs.height;
-	const r = Math.random() * 200 + 20;
+	const r = Math.random() * (x + y) + 100;
 	const gradient = ctx.createRadialGradient(x, y, 0, x, y, r)
 	gradient.addColorStop(0, getRandomColor());
 	gradient.addColorStop(1, '#0000');
 	ctx.fillStyle = gradient;
-	ctx.globalAlpha = Math.random() / 5
+	ctx.globalAlpha = 5 / r;
 	ctx.beginPath()
 	ctx.arc(x, y, r, 0, Math.PI * 2)
 	ctx.fill();
@@ -46,17 +46,18 @@ function drawSpaceDust() {
 function drawStar() {
 	const x = Math.random() * cvs.width;
 	const y = Math.random() * cvs.height;
-	const r = 4 * Math.random() * Math.random() * Math.random();
+	const r = 3 * Math.random() * Math.random() * Math.random();
 	ctx.fillStyle = "#FFF";
-	ctx.globalAlpha = 1
+	ctx.globalAlpha = Math.random() * 0.5 + 0.7;
 	ctx.beginPath()
 	ctx.arc(x, y, r, 0, Math.PI * 2)
 	ctx.fill();
+	ctx.globalAlpha = 1;
 }
 function drawPlanet() {
-	const x = Math.floor(Math.random() * cvs.width);
-	const y = Math.floor(Math.random() * cvs.height);
-	const r = 50 * (Math.random() * 2.5) * (Math.random() * 2) * (Math.random() * 1.2);
+	const x = Math.floor(Math.random() * (cvs.width - 100));
+	const y = Math.floor(Math.random() * (cvs.height - 100));
+	const r = 40 * (Math.random() * 2.5) * (Math.random() * 2) * (Math.random() * 1.5);
 	const planet = document.createElement('img');
 	planet.src = `planets/${Math.floor(Math.random() * 6)}min.png`
 	planet.style.pointerEvents = 'none';
@@ -68,7 +69,7 @@ function drawPlanet() {
 	planet.style.transition = `all 200s linear`
 	planet.style.transform = `rotateZ(${Math.random() * 360}deg)`;
 	setTimeout(function() {
-		planet.style.transform = `translateX(${Math.random() * 1600 - 800}px)`;
+		planet.style.transform = `translate(${Math.random() * 1600 - 800}px, ${Math.random() * 1600 - 800}px)`;
 		planet.style.transform = `rotateZ(${Math.random() * 760 - 360}deg)`;
 	}, 1)
 
@@ -81,13 +82,13 @@ function startDraw() {
 	ctx.fillRect(0, 0, cvs.width, cvs.height)
 
 	var perf = performance.now()
-	for (var i = 0; i < 1000; i ++) {
+	for (var i = 0; i < (cvs.width + cvs.height); i ++) {
 		drawStar()
 	}
 	for (var i = 0; i < 200; i ++) {
 		drawSpaceDust()
 	}
-	for (var i = 0; i < 10; i ++) {
+	for (var i = 0; i < 20; i ++) {
 		drawPlanet()
 	}
 	console.log((performance.now() - perf) / 1000 + " seconds to render.")
