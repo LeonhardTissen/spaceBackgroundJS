@@ -1,13 +1,19 @@
 // Initialization
 const cvs = document.getElementById('spaceBackground');
 const ctx = cvs.getContext('2d');
-const planets = document.getElementById('spacePlanets')
+const planets = document.getElementById('spacePlanets');
+const galaxies = document.getElementById('spaceGalaxies');
 //cvs.style.pointerEvents = 'none';
 planets.style.position = 'fixed';
 planets.style.top = 0;
 planets.style.left= 0;
 planets.style.width = "100vw"
 planets.style.height= "100vh"
+galaxies.style.position = 'fixed';
+galaxies.style.top = 0;
+galaxies.style.left= 0;
+galaxies.style.width = "100vw"
+galaxies.style.height= "100vh"
 cvs.style.position = 'fixed';
 cvs.style.top = 0;
 cvs.style.left= 0;
@@ -32,17 +38,29 @@ function getRandomColor() {
 function drawSpaceDust() {
 	const x = Math.random() * cvs.width;
 	const y = Math.random() * cvs.height;
-	const r = Math.random() * (x + y) + 100;
+	const r = Math.random() * 500 + 50;
 	const gradient = ctx.createRadialGradient(x, y, 0, x, y, r)
 	gradient.addColorStop(0, getRandomColor());
 	gradient.addColorStop(1, '#0000');
 	ctx.fillStyle = gradient;
-	ctx.globalAlpha = 5 / r;
+	ctx.globalAlpha = 10 / r;
 	ctx.beginPath()
 	ctx.arc(x, y, r, 0, Math.PI * 2)
 	ctx.fill();
 }
-
+function drawVoid() {
+	const x = Math.random() * cvs.width;
+	const y = Math.random() * cvs.height;
+	const r = Math.random() * 1500 + 50;
+	const gradient = ctx.createRadialGradient(x, y, 0, x, y, r)
+	gradient.addColorStop(0, "#000F");
+	gradient.addColorStop(1, '#0000');
+	ctx.fillStyle = gradient;
+	ctx.globalAlpha = 1;
+	ctx.beginPath()
+	ctx.arc(x, y, r, 0, Math.PI * 2)
+	ctx.fill();
+}
 function drawStar() {
 	const x = Math.random() * cvs.width;
 	const y = Math.random() * cvs.height;
@@ -53,6 +71,22 @@ function drawStar() {
 	ctx.arc(x, y, r, 0, Math.PI * 2)
 	ctx.fill();
 	ctx.globalAlpha = 1;
+}
+function drawGalaxy() {
+	const x = Math.floor(Math.random() * (cvs.width - 100));
+	const y = Math.floor(Math.random() * (cvs.height - 100));
+	const r = 40 * (Math.random() * 2.5) * (Math.random() * 2) * (Math.random() * 1.5);
+	const galaxy = document.createElement('img');
+	galaxy.src = `galaxies/${Math.floor(Math.random() * 5)}min.png`
+	galaxy.style.pointerEvents = 'none';
+	galaxy.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
+	galaxy.style.width = r + "px";
+	galaxy.style.position = 'absolute';
+	galaxy.style.left = x + "px";
+	galaxy.style.top = y + "px";
+	galaxy.style.transform = `rotateZ(${Math.random() * 360}deg)`;
+
+	galaxies.appendChild(galaxy);
 }
 function drawPlanet() {
 	const x = Math.floor(Math.random() * (cvs.width - 100));
@@ -79,17 +113,24 @@ function drawPlanet() {
 function startDraw() {
 	ctx.fillStyle = '#000';
 	planets.innerHTML = "";
-	ctx.fillRect(0, 0, cvs.width, cvs.height)
+	galaxies.innerHTML = "";
+	ctx.fillRect(0, 0, cvs.width, cvs.height);
 
-	var perf = performance.now()
-	for (var i = 0; i < (cvs.width + cvs.height); i ++) {
-		drawStar()
+	var perf = performance.now();
+	for (var i = 0; i < (cvs.width * cvs.height) / 20000; i ++) {
+		drawSpaceDust();
 	}
-	for (var i = 0; i < 200; i ++) {
-		drawSpaceDust()
+	for (var i = 0; i < (cvs.width * cvs.height) / 200; i ++) {
+		drawStar();
 	}
-	for (var i = 0; i < 20; i ++) {
-		drawPlanet()
+	for (var i = 0; i < 1; i ++) {
+		drawVoid();
 	}
-	console.log((performance.now() - perf) / 1000 + " seconds to render.")
+	for (var i = 0; i < (cvs.width * cvs.height) / 200000; i ++) {
+		drawGalaxy();
+	}
+	for (var i = 0; i < (cvs.width * cvs.height) / 100000; i ++) {
+		drawPlanet();
+	}
+	console.log((performance.now() - perf) / 1000 + " seconds to render.");
 }
