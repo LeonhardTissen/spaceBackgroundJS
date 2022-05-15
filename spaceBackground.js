@@ -76,11 +76,11 @@ function drawPlanet() {
 }
 
 function startDraw() {
-	var perf = performance.now()
 	ctx.fillStyle = '#000';
 	planets.innerHTML = "";
 	ctx.fillRect(0, 0, cvs.width, cvs.height)
 
+	var perf = performance.now()
 	for (var i = 0; i < 1000; i ++) {
 		drawStar()
 	}
@@ -90,6 +90,5 @@ function startDraw() {
 	for (var i = 0; i < 10; i ++) {
 		drawPlanet()
 	}
-
 	console.log((performance.now() - perf) / 1000 + " seconds to render.")
 }
