@@ -84,6 +84,7 @@ function drawGalaxy() {
 	galaxy.style.position = 'absolute';
 	galaxy.style.left = x + "px";
 	galaxy.style.top = y + "px";
+	galaxy.style.userSelect = 'none';
 	galaxy.style.transform = `rotateZ(${Math.random() * 360}deg)`;
 
 	galaxies.appendChild(galaxy);
@@ -100,11 +101,12 @@ function drawPlanet() {
 	planet.style.position = 'absolute';
 	planet.style.left = x + "px";
 	planet.style.top = y + "px";
-	planet.style.transition = `all 200s linear`
+	planet.style.transition = `all 2000s linear`
+	planet.style.userSelect = 'none';
 	planet.style.transform = `rotateZ(${Math.random() * 360}deg)`;
 	setTimeout(function() {
-		planet.style.transform = `translate(${Math.random() * 1600 - 800}px, ${Math.random() * 1600 - 800}px)`;
-		planet.style.transform = `rotateZ(${Math.random() * 760 - 360}deg)`;
+		planet.style.transform = `translate(${Math.random() * 16000 - 8000}px, ${Math.random() * 16000 - 8000}px)`;
+		planet.style.transform = `rotateZ(${Math.random() * 7600 - 3060}deg)`;
 	}, 1)
 
 	planets.appendChild(planet);
